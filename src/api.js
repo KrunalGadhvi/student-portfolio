@@ -65,3 +65,22 @@ export const deleteTask = async (id) => {
   }
   return response.json();
 };
+
+/**
+ * Generate AI Task Description
+ * Practical 13: Calls backend /api/ai/generate-description
+ */
+export const generateAiDescription = async (title) => {
+  const response = await fetch(`${BASE_URL}/api/ai/generate-description`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ title })
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || errorData.error || 'Failed to generate AI description');
+  }
+  return response.json();
+};

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTasks, createTask, updateTask, deleteTask } from '../api';
+import { getTasks, createTask, updateTask, deleteTask, generateAiDescription } from '../api';
 import Spinner from '../components/Spinner';
 import ErrorMessage from '../components/ErrorMessage';
 import Toast from '../components/Toast';
@@ -25,6 +25,10 @@ function TasksPage() {
   const [priority, setPriority] = useState('medium');
   const [submitting, setSubmitting] = useState(false);
 
+  // Practical 13: AI State Management
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiDisclaimer, setAiDisclaimer] = useState('');
+
   // Supplementary 2: Delete confirmation modal state
   const [taskToDelete, setTaskToDelete] = useState(null);
 
@@ -33,6 +37,33 @@ function TasksPage() {
 
   const showToast = (message, type = 'success') => {
     setToast({ message, type });
+  };
+
+  // Practical 13: AI Generation Handler with Graceful Degradation
+  const handleAiGenerate = async () => {
+    if (!title.trim()) {
+      showToast('Please enter a task title first!', 'error');
+      return;
+    }
+
+    setAiLoading(true);
+    try {
+      const data = await generateAiDescription(title);
+      if (data.description) {
+        setDescription(data.description);
+      }
+      if (data.suggestedPriority) {
+        setPriority(data.suggestedPriority);
+      }
+      if (data.disclaimer) {
+        setAiDisclaimer(data.disclaimer);
+      }
+      showToast('✨ AI suggested task description & priority!', 'success');
+    } catch (err) {
+      showToast(`AI error: ${err.message}`, 'error');
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   // Fetch tasks on mount
@@ -172,7 +203,19 @@ function TasksPage() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="task-desc-input">Description</label>
+              <div className="label-with-ai-btn">
+                <label htmlFor="task-desc-input">Description</label>
+                {/* Practical 13: AI Generation Action Button */}
+                <button
+                  type="button"
+                  className="ai-action-btn"
+                  onClick={handleAiGenerate}
+                  disabled={aiLoading || !title.trim()}
+                  title="Auto-generate description based on title"
+                >
+                  {aiLoading ? '✨ Thinking...' : '✨ Auto-Generate with AI'}
+                </button>
+              </div>
               <textarea
                 id="task-desc-input"
                 rows="3"
@@ -181,6 +224,11 @@ function TasksPage() {
                 onChange={(e) => setDescription(e.target.value)}
                 className="form-input form-textarea"
               />
+              {aiDisclaimer && (
+                <div className="ai-disclaimer-pill">
+                  <span>🤖 {aiDisclaimer}</span>
+                </div>
+              )}
             </div>
 
             <div className="form-group">
