@@ -1,30 +1,45 @@
-# Student Portfolio - Practical 1
+# Student Portfolio - React Lab Practicals
 
 > **Subject:** Advanced Web Development Frameworks (ITUE301) | Semester: 5th  
 > **Institution:** Charotar University of Science and Technology (CHARUSAT)  
 > **Faculty:** Faculty of Technology and Engineering (CSPIT / DEPSTAR)  
-> **Course Outcome:** CO1 / PO3, PO5  
+> **Course Outcomes:** CO1 / PO3, PO5  
 
 ---
 
-## 🎯 Practical 1: Introduction to React and Component Architecture
+## 🎯 Practical 1: Introduction to React & Component Architecture
 
 ### Objective
 To set up a React development environment using Vite and build a static UI using independently structured, reusable components with unidirectional props data flow.
 
 ---
 
-## 🏗️ Architecture & Component Tree
+## 🎯 Practical 2: State Management & Routing in React
+
+### Objective
+To implement reactive state management using `useState` and multi-page navigation using React Router v6 in the portfolio application without full page reloads.
+
+### 🗺️ Multi-Route Architecture
 
 ```
-App.jsx
- ├── NavBar.jsx      (Supplementary: Active section indicator on scroll)
- ├── Header.jsx      (Required: Profile name, title, inline themeColor prop)
- ├── About.jsx       (Required: Academic & biographical bio)
- ├── Skills.jsx      (Required: Dynamic list receiving skillList array prop)
- ├── Projects.jsx    (Post-Lab: 3 curated project cards with tech tags)
- └── Footer.jsx      (Required: Lab metadata, contact info, copyright)
+App.jsx (wrapped inside <BrowserRouter> in main.jsx)
+ ├── NavBar.jsx          (Navigation links via <NavLink> + Dark/Light Mode toggle)
+ ├── Routes
+ │    ├── Route "/"          → <Home /> (Header, About, Skills)
+ │    ├── Route "/projects"  → <ProjectsPage /> (Card-based project showcase)
+ │    ├── Route "/contact"   → <Contact /> (Controlled inputs, live mirror, tooltip toggle)
+ │    └── Route "*"          → <NotFound /> (Custom 404 handler)
+ └── Footer.jsx          (Global copyright & institutional credentials)
 ```
+
+### 🔑 State Management (`useState`) Highlights
+1. **Dark/Light Mode Theme Toggle (`isDarkMode`)**:
+   - Manages state at root container level and applies `.dark-theme` / `.light-theme` class dynamically.
+2. **Controlled Form Inputs (`message`, `name`, `email`)**:
+   - Tied directly to React state with real-time keystroke mirroring in an inspector panel.
+   - Live character count below the input (`{message.length} / 250 characters`).
+3. **Visibility Toggle State (`showTooltip`)**:
+   - Toggles an interactive educational help card explaining controlled component principles.
 
 ---
 
@@ -55,31 +70,22 @@ npm run build
 
 ---
 
-## ✨ Implemented Features
+## 🌐 Routes Overview
 
-1. **4+ Reusable Components**:
-   - `Header.jsx`: Hero showcase receiving `name`, `title`, and `themeColor`.
-   - `About.jsx`: Biographical and university curriculum overview.
-   - `Skills.jsx`: Renders `skillList` dynamically using `.map()` and unique keys.
-   - `Projects.jsx`: 3 hardcoded projects with badges, tech stack, and category tags.
-   - `Footer.jsx`: Institutional copyright and developer contacts.
-   - `NavBar.jsx`: Sticky glassmorphic navigation with active section detection.
-
-2. **Supplementary Problem Solved**:
-   - **Active Navigation Highlighting**: Auto-updates active tab based on scroll position.
-   - **Dynamic Skills Array Prop**: Passed from `App.jsx` and mapped cleanly.
-   - **Inline Style via Theme Prop**: `themeColor` dynamically styles the Header accent and borders.
-
-3. **Live Props Tester Toolbar**:
-   - Built-in interactive test toolbar at the top of the viewport to instantly experiment with altering props passed to child components.
+| Route Path | Component | Purpose | Key Features |
+| :--- | :--- | :--- | :--- |
+| `/` | `Home.jsx` | Landing & Profile | Header (props-driven inline style), About bio, Skills list |
+| `/projects` | `Projects.jsx` | Project Portfolio | 3 curated project cards with tech tags |
+| `/contact` | `Contact.jsx` | Interactive Form | Controlled `useState` inputs, live mirror, character count, tooltip toggle |
+| `*` | `NotFound.jsx` | 404 Error Page | Catches undefined paths with link back to Home |
 
 ---
 
-## 📝 Lab Viva & Key Analysis Questions
+## 📝 Viva Questions & Conceptual Answers
 
-1. **What is the role of each component in the overall UI structure?**
-   - Each component encapsulates a single responsibility: `App` manages state & orchestration, `Header` handles identity & greeting, `About` presents biography, `Skills` renders dynamic competencies, `Projects` displays achievements, and `Footer` provides metadata.
-2. **How does React re-render when props change?**
-   - Props change triggers React reconciliation. React generates a new Virtual DOM tree, performs a diffing comparison against the previous tree, and batches minimal Real DOM updates.
-3. **Why is component reusability important in large-scale applications?**
-   - Eliminates code duplication (DRY), enforces UI consistency, isolates bugs, and simplifies refactoring.
+1. **Why use `<Link to="...">` or `<NavLink>` instead of `<a href="...">`?**
+   - Standard `<a>` tags cause the browser to trigger a full HTTP GET request and full page reload, losing client state and destroying the Single Page Application (SPA) experience. React Router's `<Link>` intercepts navigation using the HTML5 History API (`pushState`), swapping out route components without reloading the browser.
+2. **What does controlled component mean in React?**
+   - A controlled component is an input element whose value is governed by React state (`value={state}`) and whose updates are channeled through an event handler (`onChange={(e) => setState(e.target.value)}`). This ensures a single source of truth.
+3. **Why must `<BrowserRouter>` wrap `<App />`?**
+   - React Router uses React's Context API internally to provide navigation state and URL listeners to descendant components. If components containing `useRoutes()`, `<Routes>`, or `<Link>` are rendered outside `<BrowserRouter>`, React throws a router context error.

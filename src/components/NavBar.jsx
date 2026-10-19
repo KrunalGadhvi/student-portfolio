@@ -1,82 +1,64 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { NavLink, Link } from 'react-router-dom';
 
 /**
- * NavBar Component (Supplementary Problem 1)
- * Features sticky glassmorphism and dynamically highlights the active section
- * based on the user's scroll position.
+ * NavBar Component (Practical 2 Router Integration)
+ * Uses React Router's `NavLink` and `Link` to enable single-page transitions without full page reloads.
+ * Also includes Dark / Light mode toggle (Supplementary requirement).
  */
-function NavBar({ brandName = "DevPortfolio" }) {
-  const [activeSection, setActiveSection] = useState('home');
-
-  const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' }
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY + 120;
-      
-      navItems.forEach((item) => {
-        const element = document.getElementById(item.id);
-        if (element) {
-          const top = element.offsetTop;
-          const height = element.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(item.id);
-          }
-        }
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (e, id) => {
-    e.preventDefault();
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      setActiveSection(id);
-    }
-  };
-
+function NavBar({ brandName = "DevPortfolio", isDarkMode = true, onToggleTheme }) {
   return (
     <header className="navbar-wrapper">
       <nav className="navbar container" aria-label="Main Navigation">
-        <a href="#home" className="nav-brand" onClick={(e) => scrollToSection(e, 'home')}>
+        <Link to="/" className="nav-brand">
           <span className="brand-dot"></span>
           <span className="brand-text">{brandName}</span>
-          <span className="badge-tag">React v19</span>
-        </a>
+          <span className="badge-tag">Router v6</span>
+        </Link>
 
         <ul className="nav-links">
-          {navItems.map((item) => (
-            <li key={item.id}>
-              <a
-                href={`#${item.id}`}
-                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-                onClick={(e) => scrollToSection(e, item.id)}
-              >
-                {item.label}
-                {activeSection === item.id && <span className="active-indicator" />}
-              </a>
-            </li>
-          ))}
+          <li>
+            <NavLink 
+              to="/" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              end
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/projects" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Projects
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
+              to="/contact" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Contact
+            </NavLink>
+          </li>
         </ul>
 
         <div className="nav-actions">
-          <a
-            href="#contact"
-            className="btn btn-secondary btn-sm"
-            onClick={(e) => scrollToSection(e, 'contact')}
+          {/* Supplementary Problem: Dark/Light Mode toggle */}
+          <button
+            type="button"
+            className="theme-mode-btn"
+            onClick={onToggleTheme}
+            title={`Switch to ${isDarkMode ? 'Light' : 'Dark'} Mode`}
+            aria-label="Toggle theme mode"
           >
-            Get In Touch
-          </a>
+            {isDarkMode ? '☀️ Light' : '🌙 Dark'}
+          </button>
+
+          <Link to="/contact" className="btn btn-primary btn-sm" style={{ backgroundColor: '#6366f1' }}>
+            Hire / Connect
+          </Link>
         </div>
       </nav>
     </header>
