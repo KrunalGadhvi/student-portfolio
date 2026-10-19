@@ -35,8 +35,55 @@ function App() {
     setIsDarkMode((prevMode) => !prevMode);
   };
 
+  const themePresets = [
+    { name: 'Indigo', color: '#6366f1' },
+    { name: 'Cyan', color: '#06b6d4' },
+    { name: 'Emerald', color: '#10b981' },
+    { name: 'Pink', color: '#ec4899' },
+    { name: 'Amber', color: '#f59e0b' }
+  ];
+
   return (
     <div className={`app-container ${isDarkMode ? 'dark-theme' : 'light-theme'}`}>
+      {/* Interactive Props Experimenter Bar (Practical 1 & 2) */}
+      <aside className="lab-prop-toolbar" aria-label="Lab Examiner Props Toolbar">
+        <div className="container toolbar-inner">
+          <div className="toolbar-title">
+            <span className="live-badge">Practical 1 Props Tester</span>
+            <span>Experiment with props passed to child components:</span>
+          </div>
+
+          <div className="toolbar-controls">
+            <div className="control-item">
+              <label htmlFor="student-name-input">Header <code>name</code> prop:</label>
+              <input
+                id="student-name-input"
+                type="text"
+                value={studentName}
+                onChange={(e) => setStudentName(e.target.value)}
+                placeholder="Enter student name..."
+              />
+            </div>
+
+            <div className="control-item">
+              <label>Header <code>themeColor</code> prop:</label>
+              <div className="palette-swatches">
+                {themePresets.map((preset) => (
+                  <button
+                    key={preset.color}
+                    type="button"
+                    title={preset.name}
+                    className={`swatch-btn ${themeColor === preset.color ? 'active' : ''}`}
+                    style={{ backgroundColor: preset.color }}
+                    onClick={() => setThemeColor(preset.color)}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
       <NavBar 
         brandName={`${studentName.split(' ')[0] || 'Dev'}.io`} 
         isDarkMode={isDarkMode}

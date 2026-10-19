@@ -2,11 +2,12 @@ import React from 'react';
 import Header from '../components/Header';
 import About from '../components/About';
 import Skills from '../components/Skills';
+import Projects from '../components/Projects';
 
 /**
  * Home Page Component (Route: "/")
- * Assembled for Practical 2 multi-route architecture.
- * Composes Header, About, and Skills components.
+ * Assembled for Practical 1 & 2 architecture.
+ * Composes Header, About, Skills, and Projects components.
  */
 function Home({ studentName, themeColor, skillList }) {
   return (
@@ -26,6 +27,9 @@ function Home({ studentName, themeColor, skillList }) {
       />
 
       <Skills skillList={skillList} />
+
+      {/* Practical 1 Assignment: 3 hardcoded projects component */}
+      <Projects />
     </div>
   );
 }
