@@ -28,6 +28,14 @@ function NavBar({ brandName = "DevPortfolio", isDarkMode = true, onToggleTheme }
           </li>
           <li>
             <NavLink 
+              to="/tasks" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            >
+              Task Manager
+            </NavLink>
+          </li>
+          <li>
+            <NavLink 
               to="/projects" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
