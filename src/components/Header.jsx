@@ -6,7 +6,7 @@ import React from 'react';
  * Applies `themeColor` as an inline style to key accent elements.
  */
 function Header({ 
-  name = "Alex Morgan", 
+  name = "Kurnal Kidiya", 
   title = "Frontend & React Engineer", 
   tagline = "Designing & Engineering Modern, Scalable Web Applications", 
   themeColor = "#6366f1" 

@@ -6,8 +6,8 @@ import React from 'react';
  * Receives `author`, `email`, and `academicYear` as props.
  */
 function Footer({ 
-  author = "Alex Morgan", 
-  email = "alex.morgan@charusat.edu.in",
+  author = "Kurnal Kidiya", 
+  email = "24dce059@charusat.edu.in",
   academicYear = "2025-2026",
   course = "ITUE301: Advanced Web Development Frameworks"
 }) {

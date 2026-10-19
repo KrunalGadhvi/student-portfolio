@@ -16,7 +16,7 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [studentName, setStudentName] = useState('Alex Morgan');
+  const [studentName, setStudentName] = useState('Kurnal Kidiya');
   const [themeColor, setThemeColor] = useState('#6366f1');
 
   const [skillList] = useState([

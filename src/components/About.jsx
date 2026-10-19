@@ -8,7 +8,7 @@ import React from 'react';
 function About({ 
   bio = "I am a 3rd-year computer engineering student passionate about building performant, reactive user interfaces and modern full-stack web applications. I focus on clean component architectures, state management, and modern developer tooling.",
   institution = "Charotar University of Science and Technology (CHARUSAT)",
-  department = "Faculty of Technology and Engineering (CSPIT / DEPSTAR)",
+  department = "DEPSTAR - Computer Engineering (24DCE059)",
   course = "Advanced Web Development Frameworks (ITUE301)",
   semester = "5th Semester - B.Tech"
 }) {
